@@ -13,7 +13,7 @@ function updateConfig(configPath, updatedConfig) {
     fs.writeFileSync(configPath, JSON.stringify(updatedConfig, null, 2));
 }
 
-function parseData(sheet, row, data) {
+function parseData(sheet, row, data, mat_id) {
     console.log(`Parsing data for sheet: ${sheet} Row:${row}`);
     const workbook = xlsx.parse(spreadsheetPath);
     let targetSheet;
@@ -27,11 +27,19 @@ function parseData(sheet, row, data) {
     if (targetSheet) {
         console.log(`Sheet found!`);
         for (let obj of data) {
-            returnObj.push({ prop_value: targetSheet[row][obj.col].toFixed(obj.roundTo), prop_name: obj.prop_name });
+            if (targetSheet[row][obj.col].length === 0) {
+                const errMsg = `Error: ${new Date().toISOString().split('T')[0]}\nRow for mat_id${mat_id} is empty!`;
+                fs.appendFileSync("error.log", errMsg, 'utf-8');
+                fs.appendFileSync("importer.log", errMsg, 'utf-8');
+            } else {
+                const pushMsg = `Pushing data for mat_id: ${mat_id} into payload...`;
+                fs.appendFileSync("importer.log", pushMsg, 'utf-8');
+                returnObj.push({ prop_value: targetSheet[row][obj.col].toFixed(obj.roundTo), prop_name: obj.prop_name });
+            }
         }
         return returnObj;
     } else {
-        console.log(`Sheet ${sheet} not found!`);
+        fs.appendFileSync("importer.log", `Sheet ${sheet} not found!`, 'utf-8');
         return returnObj;
     }
 }
@@ -61,20 +69,26 @@ async function sendData(payload) {
 }
 
 function parseAndSend(obj) {
-    let prop_values = parseData(obj.sheet, obj.row, obj.data);
-    for (const value of prop_values) {
-        const date = new Date().toISOString().split('T')[0];
-        let payload = {
-            material_source_id: obj.mat_id,
-            property_name: value.prop_name,
-            value_float: `${value.prop_value}`,
-            value_str: `${value.prop_value}`,
-            created_on: date
+    let prop_values = parseData(obj.sheet, obj.row, obj.data, obj.mat_id);
+    if (prop_values && prop_values.length > 0) {
+        for (const value of prop_values) {
+            const date = new Date().toISOString().split('T')[0];
+            let payload = {
+                material_source_id: obj.mat_id,
+                property_name: value.prop_name,
+                value_float: `${value.prop_value}`,
+                value_str: `${value.prop_value}`,
+                created_on: date
+            }
+            sendData(payload);
         }
-        sendData(payload);
+        obj.row += 1;
+        updateConfig(configPath, dataToParse);
+    } else {
+        const errMsg = `Error! ${new Date().toISOString().split('T')[0]}\nNo data found in file!\nmat_id: ${obj.mat_id}\nrow: ${obj.row}\nsheet: ${obj.sheet}`;
+        fs.appendFileSync("importer.log", errMsg, 'utf-8');
+        fs.appendFileSync('error.log', errMsg, 'utf-8');
     }
-    obj.row += 1;
-    updateConfig(configPath, dataToParse);
 }
 
 export default function scheduleTasks() {
@@ -83,7 +97,7 @@ export default function scheduleTasks() {
             parseAndSend(obj);
         }, null, true);
         console.log("New task set!\nCronexpr: " + obj.cronExpr);
-        console.log(`Payload:\nSheet:${obj.sheet}\nRow:${obj.row}\nMat_id:${obj.mat_id}`);
+        console.log(`Task:\nSheet:${obj.sheet}\nRow:${obj.row}\nMat_id:${obj.mat_id}`);
         job.start();
     }
 }
