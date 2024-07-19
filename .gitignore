@@ -1,0 +1,5 @@
+.env
+.vscode
+payloads.log
+node_modules
+analytics.xlsx

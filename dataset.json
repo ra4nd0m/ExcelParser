@@ -1,0 +1,335 @@
+[
+  {
+    "sheet": "08.ГЭ",
+    "row": 396,
+    "mat_id": 84,
+    "data": [
+      {
+        "prop_name": "Средняя цена",
+        "col": 17,
+        "roundTo": 0
+      }
+    ],
+    "cronExpr": "0 22 * * 4"
+  },
+  {
+    "sheet": "08.ГЭ",
+    "row": 396,
+    "mat_id": 85,
+    "data": [
+      {
+        "prop_name": "Средняя цена",
+        "col": 23,
+        "roundTo": 0
+      }
+    ],
+    "cronExpr": "0 22 * * 4"
+  },
+  {
+    "sheet": "15. ФС (М_мт)",
+    "row": 185,
+    "mat_id": 86,
+    "data": [
+      {
+        "prop_name": "Средняя цена",
+        "col": 5,
+        "roundTo": 2
+      },
+      {
+        "prop_name": "Мин цена",
+        "col": 3,
+        "roundTo": 2
+      },
+      {
+        "prop_name": "Макс цена",
+        "col": 4,
+        "roundTo": 2
+      }
+    ],
+    "cronExpr": "0 22 * * 5"
+  },
+  {
+    "sheet": "15. ФС (М_мт)",
+    "row": 185,
+    "mat_id": 87,
+    "data": [
+      {
+        "prop_name": "Средняя цена",
+        "col": 11,
+        "roundTo": 2
+      },
+      {
+        "prop_name": "Мин цена",
+        "col": 9,
+        "roundTo": 2
+      },
+      {
+        "prop_name": "Макс цена",
+        "col": 10,
+        "roundTo": 2
+      }
+    ],
+    "cronExpr": "0 22 * * 5"
+  },
+  {
+    "sheet": "15. ФС (М_мт)",
+    "row": 185,
+    "mat_id": 88,
+    "data": [
+      {
+        "prop_name": "Средняя цена",
+        "col": 17,
+        "roundTo": 2
+      },
+      {
+        "prop_name": "Мин цена",
+        "col": 15,
+        "roundTo": 2
+      },
+      {
+        "prop_name": "Макс цена",
+        "col": 16,
+        "roundTo": 2
+      }
+    ],
+    "cronExpr": "0 22 * * 5"
+  },
+  {
+    "sheet": "15. ФС (М_мт)",
+    "row": 185,
+    "mat_id": 89,
+    "data": [
+      {
+        "prop_name": "Средняя цена",
+        "col": 29,
+        "roundTo": 2
+      }
+    ],
+    "cronExpr": "0 22 * * 5"
+  },
+  {
+    "sheet": "15. ФС (М_мт)",
+    "row": 185,
+    "mat_id": 91,
+    "data": [
+      {
+        "prop_name": "Средняя цена",
+        "col": 35,
+        "roundTo": 2
+      },
+      {
+        "prop_name": "Мин цена",
+        "col": 33,
+        "roundTo": 2
+      },
+      {
+        "prop_name": "Макс цена",
+        "col": 34,
+        "roundTo": 2
+      }
+    ],
+    "cronExpr": "0 22 * * 5"
+  },
+  {
+    "sheet": "15. ФС (М_мт)",
+    "row": 185,
+    "mat_id": 92,
+    "data": [
+      {
+        "prop_name": "Средняя цена",
+        "col": 47,
+        "roundTo": 2
+      }
+    ],
+    "cronExpr": "0 22 * * 5"
+  },{
+    "sheet": "15. ФС (М_мт)",
+    "row": 185,
+    "mat_id": 93,
+    "data": [
+      {
+        "prop_name": "Средняя цена",
+        "col": 53,
+        "roundTo": 2
+      }
+    ],
+    "cronExpr": "0 22 * * 5"
+  },{
+    "sheet": "15. ФС (М_мт)",
+    "row": 185,
+    "mat_id": 94,
+    "data": [
+      {
+        "prop_name": "Средняя цена",
+        "col": 41,
+        "roundTo": 2
+      },
+      {
+        "prop_name": "Мин цена",
+        "col": 39,
+        "roundTo": 2
+      },
+      {
+        "prop_name": "Макс цена",
+        "col": 40,
+        "roundTo": 2
+      }
+    ],
+    "cronExpr": "0 22 * * 5"
+  },{
+    "sheet": "15. ФС (М_мт)",
+    "row": 185,
+    "mat_id": 95,
+    "data": [
+      {
+        "prop_name": "Средняя цена",
+        "col": 77,
+        "roundTo": 2
+      },
+      {
+        "prop_name": "Мин цена",
+        "col": 75,
+        "roundTo": 2
+      },
+      {
+        "prop_name": "Макс цена",
+        "col": 76,
+        "roundTo": 2
+      }
+    ],
+    "cronExpr": "0 22 * * 5"
+  },
+  {
+    "sheet": "15. ФС (М_мт)",
+    "row": 185,
+    "mat_id": 96,
+    "data": [
+      {
+        "prop_name": "Средняя цена",
+        "col": 83,
+        "roundTo": 2
+      },
+      {
+        "prop_name": "Мин цена",
+        "col": 81,
+        "roundTo": 2
+      },
+      {
+        "prop_name": "Макс цена",
+        "col": 82,
+        "roundTo": 2
+      }
+    ],
+    "cronExpr": "0 22 * * 5"
+  },{
+    "sheet": "15. ФС (М_мт)",
+    "row": 185,
+    "mat_id": 97,
+    "data": [
+      {
+        "prop_name": "Средняя цена",
+        "col": 89,
+        "roundTo": 2
+      },
+      {
+        "prop_name": "Мин цена",
+        "col": 87,
+        "roundTo": 2
+      },
+      {
+        "prop_name": "Макс цена",
+        "col": 88,
+        "roundTo": 2
+      }
+    ],
+    "cronExpr": "0 22 * * 5"
+  },{
+    "sheet": "15. ФС (М_мт)",
+    "row": 185,
+    "mat_id": 98,
+    "data": [
+      {
+        "prop_name": "Средняя цена",
+        "col": 95,
+        "roundTo": 2
+      },
+      {
+        "prop_name": "Мин цена",
+        "col": 93,
+        "roundTo": 2
+      },
+      {
+        "prop_name": "Макс цена",
+        "col": 94,
+        "roundTo": 2
+      }
+    ],
+    "cronExpr": "0 22 * * 5"
+  },{
+    "sheet": "15. ФС (М_мт)",
+    "row": 185,
+    "mat_id": 99,
+    "data": [
+      {
+        "prop_name": "Средняя цена",
+        "col": 59,
+        "roundTo": 2
+      },
+      {
+        "prop_name": "Мин цена",
+        "col": 57,
+        "roundTo": 2
+      },
+      {
+        "prop_name": "Макс цена",
+        "col": 58,
+        "roundTo": 2
+      }
+    ],
+    "cronExpr": "0 22 * * 5"
+  },{
+    "sheet": "15. ФС (М_мт)",
+    "row": 185,
+    "mat_id": 100,
+    "data": [
+      {
+        "prop_name": "Средняя цена",
+        "col": 65,
+        "roundTo": 2
+      },
+      {
+        "prop_name": "Мин цена",
+        "col": 63,
+        "roundTo": 2
+      },
+      {
+        "prop_name": "Макс цена",
+        "col": 64,
+        "roundTo": 2
+      }
+    ],
+    "cronExpr": "0 22 * * 5"
+  },{
+    "sheet": "15. ФС (М_мт)",
+    "row": 185,
+    "mat_id": 101,
+    "data": [
+      {
+        "prop_name": "Средняя цена",
+        "col": 71,
+        "roundTo": 2
+      },
+      {
+        "prop_name": "Мин цена",
+        "col": 69,
+        "roundTo": 2
+      },
+      {
+        "prop_name": "Макс цена",
+        "col": 70,
+        "roundTo": 2
+      }
+    ],
+    "cronExpr": "0 22 * * 5"
+  }
+]
