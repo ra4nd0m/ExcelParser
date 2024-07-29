@@ -34,7 +34,7 @@ function parseData(sheet, row, data, mat_id) {
             } else {
                 const pushMsg = `Pushing data for mat_id: ${mat_id} into payload...`;
                 fs.appendFileSync("importer.log", pushMsg, 'utf-8');
-                returnObj.push({ prop_value: targetSheet[row][obj.col].toFixed(obj.roundTo), prop_name: obj.prop_name });
+                returnObj.push({ prop_value: targetSheet[row][obj.col], prop_name: obj.prop_name });
             }
         }
         return returnObj;
