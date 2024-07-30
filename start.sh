@@ -1,0 +1,1 @@
+node ./mpl_scheduled_import.js >> out.log 2>&1 &

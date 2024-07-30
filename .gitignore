@@ -1,5 +1,5 @@
 .env
 .vscode
-payloads.log
+*.log
 node_modules
 analytics.xlsx
