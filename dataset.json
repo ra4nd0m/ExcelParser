@@ -10,7 +10,7 @@
         "roundTo": 0
       }
     ],
-    "cronExpr": "0 22 * * 4"
+    "cronExpr": "0 22 * * 5"
   },
   {
     "sheet": "08.ГЭ",
@@ -23,7 +23,7 @@
         "roundTo": 0
       }
     ],
-    "cronExpr": "0 22 * * 4"
+    "cronExpr": "0 22 * * 5"
   },
   {
     "sheet": "15. ФС (М_мт)",
