@@ -105,7 +105,6 @@ export default function scheduleTasks() {
         console.log(`Task:\nSheet:${obj.sheet}\nRow:${obj.row}\nMat_id:${obj.mat_id}`);
         job.start();
         if (process.env.DEBUG_SEND === 'true') {
-            console.log("WARNING! Operations are set to instant execute!");
             debugNoSchedulingOperation(obj);
         };
     };
@@ -113,6 +112,7 @@ export default function scheduleTasks() {
 
 
 function debugNoSchedulingOperation(obj) {
+    console.log("WARNING! Operations are set to instant execute!");
     if (process.env.THURSD_NOW === 'true' && obj.cronExpr === "0 22 * * 4") {
         parseAndSend(obj);
     };
