@@ -27,7 +27,13 @@ function parseData(sheet, row, data, mat_id) {
     if (targetSheet) {
         console.log(`Sheet found!`);
         for (let obj of data) {
-            console.log(targetSheet[row]);
+            if (typeof targetSheet[row][obj.col] === 'undefined') {
+                const errMsg = `Error: ${new Date().toISOString().split('T')[0]}\nRow for mat_id${mat_id} is undefined!`;
+                fs.appendFileSync("error.log", errMsg, 'utf-8');
+                fs.appendFileSync("importer.log", errMsg, 'utf-8');
+                return returnObj;
+            }
+            console.log(typeof  targetSheet[row][obj.col]);
             if (targetSheet[row][obj.col].length === 0) {
                 const errMsg = `Error: ${new Date().toISOString().split('T')[0]}\nRow for mat_id${mat_id} is empty!`;
                 fs.appendFileSync("error.log", errMsg, 'utf-8');
@@ -97,6 +103,9 @@ function parseAndSend(obj) {
 
 
 export default function scheduleTasks() {
+    if(process.env.DEBUG_EXEC === 'true'){
+        console.log("WARNING! Operations are set to instant execute!");
+    }
     for (const obj of dataToParse) {
         const job = new cron.CronJob(obj.cronExpr, () => {
             parseAndSend(obj);
@@ -104,7 +113,7 @@ export default function scheduleTasks() {
         console.log("New task set!\nCronexpr: " + obj.cronExpr);
         console.log(`Task:\nSheet:${obj.sheet}\nRow:${obj.row}\nMat_id:${obj.mat_id}`);
         job.start();
-        if (process.env.DEBUG_SEND === 'true') {
+        if (process.env.DEBUG_EXEC === 'true') {
             debugNoSchedulingOperation(obj);
         };
     };
@@ -112,14 +121,14 @@ export default function scheduleTasks() {
 
 
 function debugNoSchedulingOperation(obj) {
-    console.log("WARNING! Operations are set to instant execute!");
+    console.log("WARNING! Ignoring schedule and executing now!");
     if (process.env.THURSD_NOW === 'true' && obj.cronExpr === "0 22 * * 4") {
         parseAndSend(obj);
     };
     if (process.env.FRI_NOW === 'true' && obj.cronExpr === "0 22 ** 5") {
         parseAndSend(obj);
     };
-    if (process.env.INSTANT_SEND === 'true') {
+    if (process.env.INSTANT_EXEC === 'true') {
         parseAndSend(obj);
     };
 }
