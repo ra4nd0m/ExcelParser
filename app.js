@@ -27,6 +27,7 @@ function parseData(sheet, row, data, mat_id) {
     if (targetSheet) {
         console.log(`Sheet found!`);
         for (let obj of data) {
+            console.log(targetSheet[row]);
             if (targetSheet[row][obj.col].length === 0) {
                 const errMsg = `Error: ${new Date().toISOString().split('T')[0]}\nRow for mat_id${mat_id} is empty!`;
                 fs.appendFileSync("error.log", errMsg, 'utf-8');
@@ -46,8 +47,8 @@ function parseData(sheet, row, data, mat_id) {
 
 async function sendData(payload) {
     const logPath = './payloads.log';
+    const dateTime = new Date().toISOString().split('T')[0];
     if (process.env.SEND_PAYLOADS === 'false') {
-        const dateTime = new Date().toISOString().split('T')[0];
         const logEntry = `${dateTime} - Payload:\n${JSON.stringify(payload, null, 2)}\n\n`;
         fs.appendFileSync(logPath, logEntry, 'utf8');
         return;
@@ -62,9 +63,11 @@ async function sendData(payload) {
             throw new Error(`HTTP error! status: ${resp.status}`);
         } else {
             console.log("Payload sent!");
+            fs.appendFileSync("importer.log", `${dateTime}:   Data sent!`, 'utf-8');
         }
     } catch (error) {
         console.error("Error sending payload!", error);
+        fs.appendFileSync("error.log", `${dateTime}:  Error sending payload! Error:\n${error}`, 'utf-8');
     }
 }
 
@@ -91,6 +94,8 @@ function parseAndSend(obj) {
     }
 }
 
+
+
 export default function scheduleTasks() {
     for (const obj of dataToParse) {
         const job = new cron.CronJob(obj.cronExpr, () => {
@@ -99,8 +104,23 @@ export default function scheduleTasks() {
         console.log("New task set!\nCronexpr: " + obj.cronExpr);
         console.log(`Task:\nSheet:${obj.sheet}\nRow:${obj.row}\nMat_id:${obj.mat_id}`);
         job.start();
-    }
+        if (process.env.DEBUG_SEND === 'true') {
+            console.log("WARNING! Operations are set to instant execute!");
+            debugNoSchedulingOperation(obj);
+        };
+    };
 }
 
 
+function debugNoSchedulingOperation(obj) {
+    if (process.env.THURSD_NOW === 'true' && obj.cronExpr === "0 22 * * 4") {
+        parseAndSend(obj);
+    };
+    if (process.env.FRI_NOW === 'true' && obj.cronExpr === "0 22 ** 5") {
+        parseAndSend(obj);
+    };
+    if (process.env.INSTANT_SEND === 'true') {
+        parseAndSend(obj);
+    };
+}
 
