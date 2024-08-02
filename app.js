@@ -13,8 +13,8 @@ function updateConfig(configPath, updatedConfig) {
     fs.writeFileSync(configPath, JSON.stringify(updatedConfig, null, 2));
 }
 
-function parseData(sheet, row, data, mat_id) {
-    console.log(`Parsing data for sheet: ${sheet} Row:${row}`);
+async function parseData(sheet, row, data, mat_id) {
+    console.log(`Parsing data for sheet: ${sheet} Row:${row} Data: ${data}`);
     const workbook = xlsx.parse(spreadsheetPath);
     let targetSheet;
     let returnObj = [];
@@ -29,17 +29,18 @@ function parseData(sheet, row, data, mat_id) {
         for (let obj of data) {
             if (typeof targetSheet[row][obj.col] === 'undefined') {
                 const errMsg = `Error: ${new Date().toISOString().split('T')[0]}\nRow for mat_id${mat_id} is undefined!`;
+                console.log(errMsg);
                 fs.appendFileSync("error.log", errMsg, 'utf-8');
                 fs.appendFileSync("importer.log", errMsg, 'utf-8');
                 return returnObj;
             }
-            console.log(typeof  targetSheet[row][obj.col]);
             if (targetSheet[row][obj.col].length === 0) {
                 const errMsg = `Error: ${new Date().toISOString().split('T')[0]}\nRow for mat_id${mat_id} is empty!`;
                 fs.appendFileSync("error.log", errMsg, 'utf-8');
                 fs.appendFileSync("importer.log", errMsg, 'utf-8');
             } else {
                 const pushMsg = `Pushing data for mat_id: ${mat_id} into payload...`;
+                console.log(pushMsg);
                 fs.appendFileSync("importer.log", pushMsg, 'utf-8');
                 returnObj.push({ prop_value: targetSheet[row][obj.col], prop_name: obj.prop_name });
             }
@@ -77,8 +78,8 @@ async function sendData(payload) {
     }
 }
 
-function parseAndSend(obj) {
-    let prop_values = parseData(obj.sheet, obj.row, obj.data, obj.mat_id);
+async function parseAndSend(obj) {
+    let prop_values = await parseData(obj.sheet, obj.row, obj.data, obj.mat_id);
     if (prop_values && prop_values.length > 0) {
         for (const value of prop_values) {
             const date = new Date().toISOString().split('T')[0];
@@ -89,7 +90,7 @@ function parseAndSend(obj) {
                 value_str: `${value.prop_value}`,
                 created_on: date
             }
-            sendData(payload);
+            await sendData(payload);
         }
         obj.row += 1;
         updateConfig(configPath, dataToParse);
@@ -100,15 +101,35 @@ function parseAndSend(obj) {
     }
 }
 
+let taskQueue = [];
+
+function enqueueTask(taskFunction, obj) {
+    console.log("Adding task to queue");
+    taskQueue.push(() => taskFunction(obj));
+}
+
+async function processQueuedTasks() {
+    while (taskQueue.length > 0) {
+        const task = taskQueue.shift();
+        console.log("Processing task");
+        if (task) {
+            try {
+                await task();
+            } catch (error) {
+                console.error("Error executing task:", error);
+            }
+        }
+    }
+}
 
 
-export default function scheduleTasks() {
-    if(process.env.DEBUG_EXEC === 'true'){
+export default function manageTasks() {
+    if (process.env.DEBUG_EXEC === 'true') {
         console.log("WARNING! Operations are set to instant execute!");
     }
     for (const obj of dataToParse) {
         const job = new cron.CronJob(obj.cronExpr, () => {
-            parseAndSend(obj);
+            enqueueTask(async () => { parseAndSend(obj) });
         }, null, true);
         console.log("New task set!\nCronexpr: " + obj.cronExpr);
         console.log(`Task:\nSheet:${obj.sheet}\nRow:${obj.row}\nMat_id:${obj.mat_id}`);
@@ -117,8 +138,11 @@ export default function scheduleTasks() {
             debugNoSchedulingOperation(obj);
         };
     };
+    setInterval(() => {
+        processQueuedTasks();
+        console.log("Task execution started.");
+    }, 2 * 30 * 1000);
 }
-
 
 function debugNoSchedulingOperation(obj) {
     console.log("WARNING! Ignoring schedule and executing now!");
