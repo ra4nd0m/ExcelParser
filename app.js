@@ -141,7 +141,7 @@ export default function manageTasks() {
     setInterval(() => {
         processQueuedTasks();
         console.log("Task execution started.");
-    }, 2 * 30 * 1000);
+    }, 62 * 60 * 1000);
 }
 
 function debugNoSchedulingOperation(obj) {
