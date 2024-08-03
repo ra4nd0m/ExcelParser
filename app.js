@@ -138,6 +138,10 @@ export default function manageTasks() {
             debugNoSchedulingOperation(obj);
         };
     };
+    if(process.env.DEBUG_EXEC === 'true'){
+        console.log("WARNING! Ignoring schedule and executing now!");
+        processQueuedTasks();
+    }
     setInterval(() => {
         processQueuedTasks();
         console.log("Task execution started.");
@@ -145,15 +149,14 @@ export default function manageTasks() {
 }
 
 function debugNoSchedulingOperation(obj) {
-    console.log("WARNING! Ignoring schedule and executing now!");
     if (process.env.THURSD_NOW === 'true' && obj.cronExpr === "0 22 * * 4") {
-        parseAndSend(obj);
+        enqueueTask(parseAndSend(obj));
     };
     if (process.env.FRI_NOW === 'true' && obj.cronExpr === "0 22 ** 5") {
-        parseAndSend(obj);
+        enqueueTask(parseAndSend(obj));
     };
     if (process.env.INSTANT_EXEC === 'true') {
-        parseAndSend(obj);
+        enqueueTask(parseAndSend(obj));
     };
 }
 
